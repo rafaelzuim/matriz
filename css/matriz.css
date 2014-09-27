@@ -1,0 +1,13 @@
+#wrapper{
+    width:816px;
+    height:800px;
+    border:solid 1px #000;
+    display:block;
+}
+
+.celula{
+    width:100px;
+    height:40px;
+    border:solid 1px #FF0;
+    float:left;
+}
