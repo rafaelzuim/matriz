@@ -24,11 +24,12 @@ function Matriz() {
 
         this.matriz = new Array(this.rows);
 
+
         for (i = 0; i < this.rows; i++) {
             this.matriz[i] = new Array(this.cols)
             for (var j = 0; j < this.cols; j++) {
                 this.matriz[i][j] = {
-                    "content" : "",
+                    "content" : {},
                     "free" : true
                 };
             }
@@ -42,11 +43,15 @@ function Matriz() {
         $(this.printArea).html("");
         for (x = 0; x < this.matriz.length; x++) {
             for (y = 0; y < this.matriz[x].length; y++) {
-                $(this.printArea).append(
-                        $("<div/>").attr("class", "celula").attr("id",
-                                "cel-" + x + "_" + y).attr("data-x", x).attr(
-                                "data-y", y).attr("ondrop", "drop(event)")
-                                .html(this.matriz[x][y].content.img));
+                var divMatriz = $("<div/>").attr("class", "celula")
+                                            .attr("id","cel-" + x + "_" + y)
+                                            .attr("data-x", x)
+                                            .attr("data-y", y)
+                                            .attr("ondrop", "drop(event)");
+                if(this.matriz[x][y].content.hasOwnProperty("img")){
+                    divMatriz.html(this.matriz[x][y].content.img);
+                }
+                $(this.printArea).append(divMatriz);
             }
         }
         return this;
@@ -63,8 +68,12 @@ function Matriz() {
      */
     this.insert = function(x, y, content) {
         try {
-            var sizeX = parseInt(content.sizeX);
-            var sizeY = parseInt(content.sizeY);
+            var width = parseInt(content.img.width());
+            var height = parseInt(content.img.height());
+
+            var sizeX = Math.ceil(width / this.cel.width); // calcula quantas células a imagem ocupa , no eixo x
+            var sizeY = Math.ceil(height / this.cel.height); // calcula quantas células a imagem ocupa , no eixo x
+
 
             // verifica se a célula esta disponível, no caso de imagens maiores
             // , verifica suas vizinhas também
@@ -72,8 +81,8 @@ function Matriz() {
                 // ocupa a celula alvo com o objeto
                 this.matriz[x][y].content = {
                     'img' : content.img,
-                    'sizeX' : content.sizeX,
-                    'sizeY' : content.sizeY,
+                    'sizeX' : sizeX,
+                    'sizeY' : sizeY,
                     'partOf' : false
                 }
                 this.matriz[x][y].free = false;
@@ -144,7 +153,7 @@ function Matriz() {
                 if(!this.matriz[x][y].content)return;
 
                 var hasChildrens =(this.matriz[x][y].content.sizeX > 1) || (this.matriz[x][y].content.sizeY > 1);
-                this.matriz[x][y].content = null;
+                this.matriz[x][y].content = {};
                 this.matriz[x][y].free = true;
 
                 // varre a matriz todas , liberando as células filhas caso existam
@@ -156,7 +165,7 @@ function Matriz() {
                                 // verifica se a célula alocada corresponde (partOf) a célula principal que está sendo removida
                                 if(this.matriz[contX][contY].content.partOf == "["+x+"]["+y+"]")
                                 {
-                                    this.matriz[contX][contY].content = null;
+                                    this.matriz[contX][contY].content = {};
                                     this.matriz[contX][contY].free = true;
                                 }
                             }

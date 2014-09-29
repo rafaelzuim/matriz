@@ -27,14 +27,14 @@ function drop(ev) {
         if((x=$(ev.target).attr("data-x")) && (y=$(ev.target).attr("data-y"))){
             var data = ev.dataTransfer.getData("text/html");
 
-
-            var insertObj = {"img":$("#"+data),"sizeX":2,"sizeY":2};
+            var insertObj = {"img":$("#"+data)};
 
             if(matriz.insert(x,y,insertObj)){
                 ev.target.appendChild(document.getElementById(data));
             }
             else{
-                alert("nao inseriu");
+                alert("Voce esta tentando posicionar em uma area que ja esta alocada");
+                $(ev.target).css("background-color","transparent");
             }
         }
 
