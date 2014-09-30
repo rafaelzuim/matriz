@@ -1,9 +1,9 @@
+html *{
+    margin:0;
+    padding:0;
+}
 #wrapper{
-    width:1312px;
 
-    border:solid 1px #000;
-    display:block;
-    overflow:scroll;
 }
 
 .celula{
@@ -12,4 +12,7 @@
     border:solid 1px #FF0;
     float:left;
     overflow: visible;
+}
+.celula img{
+    border : 0 none;
 }

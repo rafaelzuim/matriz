@@ -21,43 +21,71 @@ Rotate = function(){
 
             // parametro que indica o eixo de rotação da imagem.
             var center = [];
-            var calc = 0;
+            var calcA = 0;
+            var calcB = 0;
 
+            // definindo o parametro "transform-origin"=>array  que será passados ao jQueryRotate
             switch(parseInt(degree)){
                 case 0 :
-                    calc += "0px";
+                    calcA = calcB = calcB + "0px";
                     break;
-                case 90 :
-                    calc = parseInt(height) / 2;
-                    calc += "px";
+                case 90 || -90:
+                    calcA = calcB = (parseInt(height) / 2) + "px";
                     break;
                 case 180 :
-                    calc = (parseInt(height) / 2) * -1;
-                    calc += "px";
+                    calcA = (parseInt(width) / 2) + "px";
+                    calcB = (parseInt(height) / 2) + "px";
                     break;
-
                 case 270 :
-                    calc = parseInt(width) / 2;
-                    calc += "px";
+                    calcA = calcB = (parseInt(width) / 2) + "px";
                     break;
                 case 360 :
-                    calc += "0px";
+                    calcA = calcB = calcB + "0px";
                     break;
             }
 
-            // duas vezes mesmo , para produzir o array [value,value]
-            center.push(calc);
-            center.push(calc);
+            // monta o array com os parametros
+            center.push(calcA);
+            center.push(calcB);
 
             // monta o objeto de parametros para a funçõ rotate
             var parametros = {"angle":degree,"center":center};
 
             $(objId).rotate(parametros);
+
+
+
             return true;
         }catch(err)
         {
             console.log(err);
             return err;
         }
+    },
+    /**
+     * Ativa o duplo click para rotacionar as imagens
+     * @param seletor = seletor css para capturar os objetos
+     */
+    this.bindEvent= function(seletor){
+        $(seletor).bind(
+                "dblclick",function(){
+                    var angulo = (isNaN(parseInt($(this).getRotateAngle()))?0:parseInt($(this).getRotateAngle()));
+                    switch(angulo){
+                        case 0 :
+                            rotate.doRotate("#"+$(this).attr("id"),90,matriz);
+                            break;
+                        case 90 :
+                            rotate.doRotate("#"+$(this).attr("id"),180,matriz);
+                            break;
+                        case 180 :
+                            rotate.doRotate("#"+$(this).attr("id"),270,matriz);
+                            break;
+                        case 270 :
+                            rotate.doRotate("#"+$(this).attr("id"),0,matriz);
+                            break;
+
+                    }
+                }
+        );
     }
 }

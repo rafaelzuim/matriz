@@ -18,6 +18,9 @@ function Matriz() {
      * matriz @var rows = Número de linhas da matriz
      */
     this.init = function(cols, rows, printArea) {
+        /**
+         * ajuste do tamanho da area de imprssão , isso deverá ser amplamente estudado quando chegarmos na etapa de impressao
+         */
         if(cols)this.cols = cols;
         if(rows)this.rows = rows;
         if(printArea)this.printArea = printArea;
@@ -69,11 +72,26 @@ function Matriz() {
      */
     this.insert = function(x, y, content) {
         try {
-            var width = parseInt(content.img.width());
-            var height = parseInt(content.img.height());
+            /**
+             *  verifica se há rotação 90 e 270 , neste caso , é necessário inverter a orientação
+             *  largura passa a ser altura e vice-versa
+            */
+            var width = 0;
+            var height = 0;
 
-            var sizeX = Math.ceil(width / this.cel.width); // calcula quantas células a imagem ocupa , no eixo x
-            var sizeY = Math.ceil(height / this.cel.height); // calcula quantas células a imagem ocupa , no eixo x
+            if(content.img.getRotateAngle() == 90 || content.img.getRotateAngle()==270)
+            {
+                width = parseInt(content.img.height());
+                height = parseInt(content.img.width());
+            }
+            else
+            {
+                width = parseInt(content.img.width());
+                height = parseInt(content.img.height());
+            }
+
+            var sizeX = Math.ceil(height / this.cel.height); // calcula quantas células a imagem ocupa , no eixo x
+            var sizeY = Math.ceil(width / this.cel.width); // calcula quantas células a imagem ocupa , no eixo x
 
 
             // verifica se a célula esta disponível, no caso de imagens maiores
@@ -221,9 +239,11 @@ function Matriz() {
             for (cont = 0; (cont < sizeX && cont < sizeY); cont++) {
                 if (cont < sizeX) {
                     free = Boolean(this.matriz[(parseInt(x)+parseInt(cont))][y].free)
+                    if(!free)return free;
                 }
                 if (cont < sizeY) {
                     free = Boolean(this.matriz[x][(parseInt(y) + parseInt(cont))].free)
+                    if(!free)return free;
                 }
             }
             return free;

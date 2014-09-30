@@ -37,6 +37,16 @@ function drop(ev) {
                 $(ev.target).css("background-color","transparent");
             }
         }
+        else
+        {
+            //se não encotrou as propriedades data-x e data-y , é por que o drop provavelmente foi feito em cima de outro cartão
+               if($(ev.target).parent().hasClass("celula")){
+                   // com certeza o drop aconteceu em cima de uma imagem, vamos iniciar um "SWAP" de thumbs
+                   alert("implementar o SWAP");
+               }
+
+
+        }
 
 
 }
