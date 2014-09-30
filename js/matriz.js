@@ -49,6 +49,7 @@ function Matriz() {
                                             .attr("data-y", y)
                                             .attr("ondrop", "drop(event)");
                 if(this.matriz[x][y].content.hasOwnProperty("img")){
+                    //divMatriz.html(this.matriz[x][y].content.img).append($("<canvas/>").attr("id","canvas-" + x + "_" + y)); com canvas
                     divMatriz.html(this.matriz[x][y].content.img);
                 }
                 $(this.printArea).append(divMatriz);
