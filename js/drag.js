@@ -65,7 +65,7 @@ function drop(ev) {
         if (matriz.insert(x, y, insertObj)) {
             ev.target.appendChild(document.getElementById(data));
         } else {
-            alert("Voce esta tentando posicionar em uma area que ja esta alocada");
+            alert("Voc\u00ea est\u00e1 tentando posicionar em uma \u00e1rea que j\u00e1 esta alocada!");
             $(ev.target).css("background-color", "transparent");
         }
     } else {

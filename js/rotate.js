@@ -80,7 +80,7 @@ Rotate = function(){
             {
                 // não cabe , insiro novamente na matriz a imagem original sem rotacionar
                 matriz.insert(x,y,{"img":$(objId)});
-                alert("Não ha espaco para rotacionar o conteudo");
+                alert("N\u00e3o h\u00e1 espa\u00e7o para rotacionar o conte\u00fado");
                 return false;
             }
 
