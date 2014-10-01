@@ -14,9 +14,9 @@
 </head>
 
 <body>
-<p> CTRL + SCROLL DO MOUSE PARA AUMENTAR OU DIMINUIR O ZOOM <P>
-<p> DUPO CLIQUE PARA ROTACIONAR O ELEMENTO  <P>
-
+<p> CTRL + SCROLL DO MOUSE PARA AUMENTAR OU DIMINUIR O ZOOM</p>
+<p> DUPO CLIQUE PARA ROTACIONAR O ELEMENTO </p>
+<button id="gerar-cordenadas">Finalizar modo grade</button>
 <div id="wrapper">
 
 </div>

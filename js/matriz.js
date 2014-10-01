@@ -93,7 +93,6 @@ function Matriz() {
             var sizeX = Math.ceil(height / this.cel.height); // calcula quantas células a imagem ocupa , no eixo x
             var sizeY = Math.ceil(width / this.cel.width); // calcula quantas células a imagem ocupa , no eixo x
 
-
             // verifica se a célula esta disponível, no caso de imagens maiores
             // , verifica suas vizinhas também
             if (this.verify(x, sizeX, y, sizeY)) {
@@ -206,14 +205,14 @@ function Matriz() {
     /**
      * Eventos que escutam o CONTENT de cada célula
      */
-    this.bindListainers = function() {
-        $(".celula").on("dragover", function(e) {
+    this.bindListainers = function(seletor) {
+        $(seletor).on("dragover", function(e) {
             allowDrop(e)
         });
-        $(".celula").on("dragleave", function(e) {
+        $(seletor).on("dragleave", function(e) {
             out(e);
         });
-        $(".celula").on("dragstart", function(e) {
+        $(seletor).on("dragstart", function(e) {
             start(e);
         });
 
@@ -249,6 +248,57 @@ function Matriz() {
             return free;
         }
     }
+
+    /**
+     * Gera ma área de impressão , sem as células ,apenas com os conteúdos de maneira absoluta
+     *
+     *
+    */
+
+    this.getPrintableArea = function(newPrintArea)
+    {
+
+        var newPrintArea = $("<div/>").css("position","relative");
+
+        // percorre o eixo X
+        for (x = 0; x < this.matriz.length; x++) {
+            //ercorre o eixo Y
+            for (y = 0; y < this.matriz[x].length; y++) {
+                //verifica se existe o atributo img , para garantir que é um espaço alocado por uma imagem
+                if(this.matriz[x][y].content.hasOwnProperty("img") )
+                {
+                    //certifica que não é apenas uma célula ocpuada por outra imagem que vazou
+                    if(this.matriz[x][y].content.partOf==''){
+                        // pega o posicionamento top,left do objeto
+                        var img = $(this.matriz[x][y].content.img);
+
+                        //limpando o que não é mais necessário da tag
+                        img.removeAttr("draggable").removeAttr("ondragstart");
+
+                        var offset = img.offset();
+
+
+
+                        //cria a div que será posicionada absolutamente
+                        var area =$("<div/>")
+                           .css("left",offset.left)
+                           .css("top",offset.top)
+                           .css("position","absolute")
+                           .append(img);
+                        newPrintArea.append(area);
+                    }
+                }
+            }
+        }
+
+        $(this.printArea).html("");
+        $(this.printArea).html(newPrintArea);
+        return true
+    }
+
+
+
+
 
     /**
      * método para usar como debug , retorna uma representação literal do array

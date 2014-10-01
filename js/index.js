@@ -14,7 +14,6 @@ $(document).ready(
             rotate = new Rotate();
 
 
-
             matriz.init(11,14,"#wrapper");
 
             var bordas = 11 * 2;
@@ -58,7 +57,15 @@ $(document).ready(
 
             });
             matriz.print();
-            matriz.bindListainers();
+            matriz.bindListainers(".celula");
             rotate.bindEvent(".celula img ")
+
+            $('#gerar-cordenadas').on(
+                    'click',function(){
+                        $('.celula').css("border","0px none");
+                        matriz.getPrintableArea();
+                    }
+            )
+
         }
  );
