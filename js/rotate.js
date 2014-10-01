@@ -16,8 +16,14 @@ Rotate = function(){
     this.doRotate = function(objId,degree,matriz){
         try{
 
+
             var width = $(objId).width();
             var height = $(objId).height();
+
+            // valores width e height reais (após rotação)
+            var realWidth =0;
+            var realHeight =0;
+
 
             // parametro que indica o eixo de rotação da imagem.
             var center = [];
@@ -28,20 +34,54 @@ Rotate = function(){
             switch(parseInt(degree)){
                 case 0 :
                     calcA = calcB = calcB + "0px";
+                    realWidth = width;
+                    realHeight = height;
                     break;
                 case 90 || -90:
                     calcA = calcB = (parseInt(height) / 2) + "px";
+                    realWidth = height;
+                    realHeight = width;
                     break;
                 case 180 :
                     calcA = (parseInt(width) / 2) + "px";
                     calcB = (parseInt(height) / 2) + "px";
+                    realWidth = width;
+                    realHeight = height;
                     break;
                 case 270 :
                     calcA = calcB = (parseInt(width) / 2) + "px";
+                    realWidth = height;
+                    realHeight = width;
                     break;
                 case 360 :
                     calcA = calcB = calcB + "0px";
+                    realWidth = width;
+                    realHeight = height;
                     break;
+            }
+
+            // tamanho na grade (antes da rotacao rotação)
+            var actualSizeX = Math.ceil(height / matriz.cel.height); // calcula quantas células a imagem ocupa , no eixo x
+            var actualSizeY = Math.ceil(width / matriz.cel.width); // calcula quantas células a imagem ocupa , no eixo x
+
+            // tamanho na grade (após rotação)
+            var sizeX = Math.ceil(realHeight / matriz.cel.height); // calcula quantas células a imagem ocupa , no eixo x
+            var sizeY = Math.ceil(realWidth / matriz.cel.width); // calcula quantas células a imagem ocupa , no eixo x
+
+            var x = parseInt($(objId).parent().attr("data-x"));
+            var y = parseInt($(objId).parent().attr("data-y"));
+
+            // verificando se após a rotação o objeto vai caber na area  escolhida
+
+            // removendo primeiro para poder verificar depois
+            matriz.remove(x,actualSizeX,y,actualSizeY);
+
+            if(!matriz.verify(x,sizeX,y,sizeY))
+            {
+                // não cabe , insiro novamente na matriz a imagem original sem rotacionar
+                matriz.insert(x,y,{"img":$(objId)});
+                alert("Não ha espaco para rotacionar o conteudo");
+                return false;
             }
 
             // monta o array com os parametros
@@ -52,8 +92,8 @@ Rotate = function(){
             var parametros = {"angle":degree,"center":center};
 
             $(objId).rotate(parametros);
-
-
+            //atualizando a alocação de células da matriz, visto que ao girar a imagem ela vai ocupar um espaço diferente do original
+            matriz.insert(x,y,{"img":$(objId)});
 
             return true;
         }catch(err)
@@ -87,5 +127,13 @@ Rotate = function(){
                     }
                 }
         );
+    },
+
+    /**
+     * Limpa os Binds dos objetos
+     */
+    this.resetBindEvent= function(seletor){
+        $(seletor).unbind("dblclick");
     }
+
 }

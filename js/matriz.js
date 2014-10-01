@@ -149,8 +149,8 @@ function Matriz() {
                 return false;
             }
         } catch (err) {
-            console.log("Ocorreu um erro ao tentar movel a imagem. Err:"
-                    + err.toString());
+            console.log("Ocorreu um erro ao tentar movel a imagem. Err:"+
+                    err.lineNumber +"=>"+ err.toString() + "\n "+ err.stack);
             return false;
         }
 
@@ -164,10 +164,10 @@ function Matriz() {
      * @return = Obejto matriz ou false
      *
      */
-    this.remove = function(x, y) {
+    this.remove = function(x,sizeX,y,sizeY) {
         try {
             //  validacao apenas para garantir que a celula realmente existe
-            if (!this.verify(x, y)) {
+            if (!this.verify(x,sizeX,y,sizeY)) {
                 // previne quando o usurio arrasta mas dispara o drop na mesma célula , portanto não h
                 if(!this.matriz[x][y].content)return;
 
@@ -196,8 +196,8 @@ function Matriz() {
                 return false;
             }
         } catch (err) {
-            console.log("Ocorreu um erro ao tentar movel a imagem. Err:"
-                    + err.toString());
+            console.log("Ocorreu um erro ao tentar movel a imagem. Err:"+
+                    err.lineNumber +"=>"+ err.toString() + "\n "+ err.stack);
             return false;
         }
 
@@ -224,10 +224,10 @@ function Matriz() {
      * disponibilidade das célular vizinhas no cado do CONTENT ocupar mais de
      * uma célula
      *
-     * @param x =
-     *            linha (cordenada x)
-     * @param y =
-     *            coluna (cordenada y)
+     * @param x = linha (cordenada x)
+     * @param y = coluna (cordenada y)
+     * @param sizeX = tamanho no eixo x
+     * @param sizeY = tamanho no eixo y
      * @return boolean (livre / ocupada)
      */
     this.verify = function(x, sizeX, y, sizeY) {
@@ -236,7 +236,7 @@ function Matriz() {
             return Boolean(this.matriz[x][y].free);
         } else {
             var free = false;
-            for (cont = 0; (cont < sizeX && cont < sizeY); cont++) {
+            for (var cont = 0; (cont < sizeX || cont < sizeY); cont++) {
                 if (cont < sizeX) {
                     free = Boolean(this.matriz[(parseInt(x)+parseInt(cont))][y].free)
                     if(!free)return free;
