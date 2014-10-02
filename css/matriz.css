@@ -5,15 +5,16 @@ html *{
 #wrapper{
     float:left;
 }
-
-
-
 .celula{
     width:257px;
     height:152px;
     border:solid 1px #FF0;
     float:left;
     overflow: visible;
+    cursor:move
+}
+.free-drag{
+    cursor:move;
 }
 .celula img{
     border : 0 none;

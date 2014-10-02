@@ -1,15 +1,13 @@
 $(document).ready(
         function()
         {
-            /*matrizObj.init(8,6);
-            matrizObj.print();*/
-
 
             /**
              * 	aqui é tudo lixão , pois é apenas pra gerar o ambiente de teste
              * portanto este é o lugar para fazer merda
              *
-             */
+            */
+
             matriz = new Matriz();
             rotate = new Rotate();
 
@@ -23,22 +21,20 @@ $(document).ready(
             $("#wrapper0").css("height",parseInt(matriz.cel.height) * parseInt(14) );
 
             contador = 1;
-            for(i=0 ; i< 8 ; i++){
-                for(j=0;j<=3;j++){
-                    if(contador >= 15)continue;
-                    matriz.insert(i,j,{"img":$("<img/>").attr("src","/img/cartao-"+contador+".jpg")
-                        .attr("draggable",true)
-                        .attr("ondragstart","drag(event)")
-                        .attr("id","cartao-"+contador)
-                        .attr("width",257)
-                        .attr("height",152)
 
-                    });
-                    contador ++;
-                }
+            for(i=1 ; i< 16 ; i++)
+            {
+                matriz.smartInsert({"img":$("<img/>").attr("src","/img/cartao-"+i+".jpg")
+                    .attr("draggable",true)
+                    .attr("ondragstart","drag(event)")
+                    .attr("id","cartao-"+i)
+                    .attr("width",257)
+                    .attr("height",152)
+                    }
+                    ,"topToBottom"
+                );
             }
-
-            matriz.insert(4,0,{"img":$("<img/>").attr("src","/img/folder-1.jpg")
+            matriz.smartInsert({"img":$("<img/>").attr("src","/img/folder-1.jpg")
                                                 .attr("draggable",true)
                                                 .attr("ondragstart","drag(event)")
                                                 .attr("id","folder-1")
@@ -47,21 +43,21 @@ $(document).ready(
 
 
                         });
-            matriz.insert(0,4,{"img":$("<img/>").attr("src","/img/folder-2.jpg")
+            matriz.smartInsert({"img":$("<img/>").attr("src","/img/folder-2.jpg")
                 .attr("draggable",true)
                 .attr("ondragstart","drag(event)")
                 .attr("id","folder-2")
                 .attr("width",500)
                 .attr("height",281)
 
-
-            });
+            },"leftToRight");
             matriz.print();
             matriz.bindListainers(".celula");
             rotate.bindEvent(".celula img ")
 
             $('#gerar-cordenadas').on(
-                    'click',function(){
+                    'click',function()
+                    {
                         $('.celula').css("border","0px none");
                         matriz.getPrintableArea();
                     }

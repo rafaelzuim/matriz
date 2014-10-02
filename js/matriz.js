@@ -156,6 +156,46 @@ function Matriz() {
     }
 
     /**
+     * Insere na grade sem especificar a posição
+     * @param content = Conteúdo que será inserido
+     * @param orientation = topToBottom -> tenta enxer a linha inteira , ocupando todas as colunas de cada linha
+     * 						leftToRight -> tenta enxer a coluna inteira , ocupando todas as linhas de cada coluna
+     */
+    this.smartInsert = function(content,orientation) {
+
+        try {
+            if(orientation == "topToBottom")
+            {
+                for (x = 0; x < this.matriz.length; x++)
+                {
+                    for (y = 0; y < this.matriz[x].length; y++)
+                    {
+                        if(this.insert(x,y,content))return true;
+                    }
+                }
+            }
+            else if(orientation == "leftToRight")
+            {
+                for(y = 0; y < this.cols ; y++)
+                {
+                    for(x = 0; x < this.matriz.length ; x++ )
+                    {
+                        if(this.insert(x,y,content))return true;
+                    }
+                }
+            }
+
+
+        } catch (err) {
+            console.log("Ocorreu um erro ao tentar movel a imagem. Err:"+
+                    err.lineNumber +"=>"+ err.toString() + "\n "+ err.stack);
+            return false;
+        }
+
+    }
+
+
+    /**
      * Remove o elemento na matriz
      *
      * @var x = linha onde fará a remoção
@@ -277,13 +317,12 @@ function Matriz() {
 
                         var offset = img.offset();
 
-
-
                         //cria a div que será posicionada absolutamente
                         var area =$("<div/>")
                            .css("left",offset.left)
                            .css("top",offset.top)
                            .css("position","absolute")
+                           .addClass("free-drag")
                            .append(img);
                         newPrintArea.append(area);
                     }

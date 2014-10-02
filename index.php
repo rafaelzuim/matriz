@@ -8,6 +8,7 @@
     <link href="css/matriz.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/drag.js"></script>
+    <script type="text/javascript" src="js/mouse.free.drag.js"></script>
     <script type="text/javascript" src="js/rotate.js"></script>
 
 
@@ -18,11 +19,8 @@
 <p> DUPO CLIQUE PARA ROTACIONAR O ELEMENTO </p>
 <button id="gerar-cordenadas">Finalizar modo grade</button>
 <div id="wrapper">
-
 </div>
-
 </body>
-
 </html>
 
 
