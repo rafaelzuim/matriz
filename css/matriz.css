@@ -1,21 +1,37 @@
 html *{
     margin:0;
     padding:0;
+
 }
 #wrapper{
     float:left;
+    position:absolute;
+    top:70;
+    left:0;
+    zoom: 50%;
+    transition:transform 0.5s ease 0s;
+    transform-origin:0 0 0;
+    transform:scale(0.5);
 }
 .celula{
-    width:257px;
-    height:152px;
     border:solid 1px #FF0;
     float:left;
     overflow: visible;
-    cursor:move
+    cursor:move;
+
+}
+.celula-mask
+{
+    border:solid 1px #1E90FF;
+    float:left;
+
 }
 .free-drag{
     cursor:move;
+    margin:1px;
+
 }
 .celula img{
     border : 0 none;
+
 }

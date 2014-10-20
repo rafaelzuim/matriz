@@ -3,15 +3,11 @@
  */
 function Matriz() {
 
-    this.constructor = function() {
-        alert("construtor");
-    }
-
     this.printArea;
     this.cols = 6;
     this.rows = 6;
     this.matriz = [];
-    this.cel = {"width":257,"height":152}
+    this.cel = {"width":257,"height":152,"borderSize":2,"className":"celula","classMaskName":"celula-mask"}
 
     /*
      * Metodo init monta inicialmente a matriz @var cols = Número de colunas da
@@ -21,13 +17,14 @@ function Matriz() {
         /**
          * ajuste do tamanho da area de imprssão , isso deverá ser amplamente estudado quando chegarmos na etapa de impressao
          */
-        if(cols)this.cols = cols;
-        if(rows)this.rows = rows;
+        if(cols)this.cols = parseInt(cols);
+        if(rows)this.rows = parseInt(rows);
         if(printArea)this.printArea = printArea;
 
+        //instancia o array
         this.matriz = new Array(this.rows);
 
-
+        //popula a matriz com posições vazias
         for (i = 0; i < this.rows; i++) {
             this.matriz[i] = new Array(this.cols)
             for (var j = 0; j < this.cols; j++) {
@@ -46,11 +43,14 @@ function Matriz() {
         $(this.printArea).html("");
         for (x = 0; x < this.matriz.length; x++) {
             for (y = 0; y < this.matriz[x].length; y++) {
-                var divMatriz = $("<div/>").attr("class", "celula")
+                var divMatriz = $("<div/>").attr("class", this.cel.className)
                                             .attr("id","cel-" + x + "_" + y)
                                             .attr("data-x", x)
                                             .attr("data-y", y)
-                                            .attr("ondrop", "drop(event)");
+                                            .attr("ondrop", "drop(event)")
+                                            .css("width",this.cel.width)
+                                            .css("height",this.cel.height)
+
                 if(this.matriz[x][y].content.hasOwnProperty("img")){
                     //divMatriz.html(this.matriz[x][y].content.img).append($("<canvas/>").attr("id","canvas-" + x + "_" + y)); com canvas
                     divMatriz.html(this.matriz[x][y].content.img);
@@ -291,15 +291,12 @@ function Matriz() {
 
     /**
      * Gera ma área de impressão , sem as células ,apenas com os conteúdos de maneira absoluta
-     *
-     *
     */
 
     this.getPrintableArea = function(newPrintArea)
     {
-
-        var newPrintArea = $("<div/>").css("position","relative");
-
+        var newPrintArea = $("<div/>").css("position","relative").css("top","0").css("left","0");
+        newPrintArea.append(this.getGridMask());
         // percorre o eixo X
         for (x = 0; x < this.matriz.length; x++) {
             //ercorre o eixo Y
@@ -315,12 +312,13 @@ function Matriz() {
                         //limpando o que não é mais necessário da tag
                         img.removeAttr("draggable").removeAttr("ondragstart");
 
-                        var offset = img.offset();
+                        var top = document.getElementById(img.parent().attr("id")).offsetTop -1;
+                        var left = document.getElementById(img.parent().attr("id")).offsetLeft -1;
 
                         //cria a div que será posicionada absolutamente
                         var area =$("<div/>")
-                           .css("left",offset.left)
-                           .css("top",offset.top)
+                           .css("left",left)
+                           .css("top",top)
                            .css("position","absolute")
                            .addClass("free-drag")
                            .append(img);
@@ -333,6 +331,32 @@ function Matriz() {
         $(this.printArea).html("");
         $(this.printArea).html(newPrintArea);
         return true
+    }
+
+    /**
+     * Monta a grade VIRTUAL , diferente da grade comum que limita a movimentação , esta grade virtual fica em uma camada
+     * z-index menor do que a camada onde as células estão, tem a finalidade de apenas oferecer uma orientação
+     * visual quando o usuário está no modo FreeDrag
+     */
+    this.getGridMask = function()
+    {
+        var gridMask = $("<div/>").attr("id","gridMask").css("z-index","-5");
+
+        //percorre o eixo x
+        for (x = 0; x < this.matriz.length; x++) {
+            //percorre o eixo Y
+            for (y = 0; y < this.matriz[x].length; y++) {
+                gridMask.append(
+                        $("<div/>").attr("class", this.cel.classMaskName)
+                            .attr("id","mask-cel-" + x + "_" + y)
+                            .attr("data-x", x)
+                            .attr("data-y", y)
+                            .css("width",parseInt(this.cel.width - this.cel.borderSize))
+                            .css("height",parseInt(this.cel.height - this.cel.borderSize))
+                        );
+            }
+        }
+        return gridMask;
     }
 
 

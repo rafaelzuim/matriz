@@ -8,6 +8,7 @@ $(document).ready(
              *
             */
 
+            zoom = 1;
             matriz = new Matriz();
             rotate = new Rotate();
 
@@ -61,7 +62,45 @@ $(document).ready(
                         $('.celula').css("border","0px none");
                         matriz.getPrintableArea();
                     }
-            )
+            );
+
+            $("#wrapper").css("transform","scale("+zoom+")");
+
+            $(document).bind('DOMMouseScroll mousewheel', function(e) {
+
+                    // o ctrl foi precionado ?
+                    if(e.ctrlKey)
+                    {
+                        e.preventDefault();
+
+                        // detail > que 0 indica que o scroll foi para baixo
+                        if(e.originalEvent.detail > 0 && zoom >0.8)
+                        {
+                            zoom -= parseFloat(0.1);
+                        }
+                        else if(zoom <=parseFloat(1.2))
+                        {
+                            zoom += parseFloat(0.1);
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+                        $("#wrapper").css("transform","scale("+zoom+")");
+                        e.target.scrollIntoView(false)
+
+                    }
+
+
+                }
+            );
+
+
+
+
+
 
         }
+
  );

@@ -10,7 +10,7 @@
 
 Rotate = function(){
     /**
-     * faz a rotação da imagem mantendo seuy posicionamento ao top-left da célula
+     * faz a rotação da imagem mantendo seu posicionamento ao top-left da célula
      */
 
     this.doRotate = function(objId,degree,matriz){
